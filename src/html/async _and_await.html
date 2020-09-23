@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script src="../js/axios.min.js"></script>
+<script>
+    //async/await是es7新引入的语法，async用于函数上，返回的是promise对象，await关键字在async函数中（await可以得到异步的结果）
+    async function queryData() {
+        var ret = await axios.get('路径'); //这里就不用then了，await一定要写，得到异步的
+        console.log(ret.data)
+        return ret.data; //   也可以这里返回数据
+    }
+    queryData().then(function(data) {
+        console.log(data); //这里接收
+    })
+
+    //里面也可以是promise对象
+    async function queryData() {
+        var ret = await new Promise(function(resolve, reject) {
+            // 这里写异步任务
+            resolve('hello');
+        });
+
+        return ret; //   也可以这里返回数据
+    }
+    queryData().then(function(data) {
+        console.log(data); //这里接收
+    })
+
+    //处理多个异步请求
+    async function queryData() {
+        var info = await axios.get('路径'); //第一个获取的作为第二个的参数
+        var ret = await axios.get('路径?info=' + info.data);
+        console.log(ret.data)
+        return ret.data; //   也可以这里返回数据
+    }
+    queryData().then(function(data) {
+        console.log(data); //这里接收
+    })
+</script>
+
+</html>

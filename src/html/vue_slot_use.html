@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <friut :arr="arr">
+            <template slot-scope='slotprops'>
+                <strong v-if='slotprops.info.id==1' style="color:red;font-size:100px">{{slotprops.info.name}}</strong>
+                <span v-else>{{slotprops.info.name}}</span>
+            </template>
+        </friut>
+    </div>
+</body>
+<script src="../js/vue.js "></script>
+<script>
+    var hub = new Vue();
+    //作用域插槽，父组件操作子组件
+    Vue.component('friut', {
+        props: ['arr'],
+        data: function() {
+            return {
+                num: 0
+            }
+        },
+        template: `<div>
+                <ul>
+                   <li :key='item.id' v-for='item in arr'>
+                    <slot :info='item'>{{item.name}}</slot>
+                   </li>
+                </ul>
+            </div>`,
+    });
+
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            arr: [{
+                id: 1,
+                name: "apple"
+            }, {
+                id: 2,
+                name: "banana"
+            }, {
+                id: 3,
+                name: "orange"
+            }]
+        },
+        methods: {
+            hander: function() {}
+        }
+    })
+</script>
+
+</html>

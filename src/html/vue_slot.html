@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <tom-counter>使用slot </tom-counter>
+        <tom-counter></tom-counter>
+
+        <hr>
+        <div>具名插槽</div>
+        <slot-name>
+            <p slot="header"><strong>我是头</strong></p>
+            <p>我是没名字</p>
+            <p>我是没名字</p>
+            <p slot="footer"><em>我是尾</em></p>
+        </slot-name>
+        <hr>
+        <div>复杂写法这样可以添加多个，且只要声明一次，template不会渲染到页面</div>
+        <slot-name>
+            <template slot="header">
+                <p slot=><strong>我是头</strong></p>
+                <p slot=><strong>我是头</strong></p>
+                <p slot=><strong>我是头</strong></p>
+            </template>
+            <p>我是没名字</p>
+            <p>我是没名字</p>
+            <template slot="footer">
+                <p slot=><strong>我是尾</strong></p>
+                <p slot=><strong>我是尾</strong></p>
+                <p slot=><strong>我是尾</strong></p>
+            </template>
+        </slot-name>
+    </div>
+</body>
+<script src="../js/vue.js "></script>
+<script>
+    var hub = new Vue();
+    //组件插槽solt默认名字，组件中间的内容为solt内容
+    Vue.component('tom-counter', {
+        data: function() {
+            return {
+                num: 0
+            }
+        },
+        template: `<div>
+             <div>
+                <div>
+                   <strong>插槽使用：</strong>
+                   <slot>默认内容</slot>
+                </div>
+             </div>
+            </div>`,
+    });
+
+    // 具名插槽
+    Vue.component('slot-name', {
+        data() {
+            return {
+
+            }
+        },
+        template: `
+             <div> 
+                 <header>
+                     <slot name='header'></slot>   
+                     <hr>       
+                 </header>
+                 <main>
+                    <slot></slot>  
+                    <hr>          
+                 </main>
+                 <footer>
+                    <slot name='footer'></slot>
+                 </footer>
+             </div>
+        `
+    })
+
+    //这个就是根组件
+    var vm = new Vue({
+        el: '#app',
+        data: {
+
+        },
+        methods: {
+            hander: function() {}
+        }
+    })
+</script>
+
+</html>

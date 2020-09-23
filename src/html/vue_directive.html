@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="z-ch">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+
+</style>
+
+<body>
+    <div id="app">
+        <input type="text" v-focus>
+        <input type="text" v-color='msg'>
+        <div v-fonts='fot'>ssssssss</div>
+        <!-- 使用自定义计算属性 -->
+        <div>{{reversing}}</div>
+
+        <span>姓</span><input type="text" v-model="firstName"><br>
+        <span>名</span><input type="text" v-model="lastName"><br>
+        <div>{{fullname}}</div>
+        <!-- 过滤器 -->
+        <input type="text" v-model="text">
+        <div>{{text|uper}}</div>
+        <div>{{text|uper|lower}}</div>
+        <input type="text" v-bind:value="text|uper">
+        <div>{{date|format("yyyy-MM-dd")}}</div>
+    </div>
+</body>
+<script src="../js/vue.js"></script>
+<script>
+    Vue.directive('focus', {
+        // el指令绑定的元素
+        inserted: function(el) {
+            el.focus();
+        }
+    });
+
+    //自定义全局指令
+    Vue.directive('color', {
+        bind: function(el, binding) {
+            console.log(binding.value);
+            el.style.backgroundColor = binding.value.color;
+        }
+    })
+
+    //过滤器，支持同时使用多个,也可以在绑定属性的时候使用
+    // vul是要处理的数据
+    Vue.filter('uper', function(vul) {
+            return vul.charAt(0).toUpperCase() + vul.slice(1);
+        })
+        // Vue.filter('lower', function(vul) {
+        //     return vul.charAt(0).toLowerCase() + vul.slice(1);
+        // })
+    Vue.filter('format', function(val, args) {
+        if (args == "yyyy-MM-dd") {
+            var ret = "";
+            ret += val.getFullYear() + "-" + (val.getMonth() + 1) + "-" + val.getDate();
+            return ret;
+        }
+    })
+    new Vue({
+        el: "#app",
+        data: {
+            msg: {
+                color: "pink"
+            },
+            fot: {
+                fontS: "10px"
+            },
+            str: 'abc',
+
+            text: "ssss",
+            firstName: "焦",
+            lastName: "悦",
+            fullname: "焦 悦",
+            date: new Date(),
+        },
+        methods: {
+
+        },
+        directives: { //局部指令
+            fonts: {
+                bind: function(el, binding) {
+                    el.style.fontSize = binding.value.fontS;
+                }
+            }
+        },
+        computed: { //计算属性定义 计算属性会有缓存，使用一次后会记住，方法不会有缓存，计算属性缓存会节省性能
+            reversing: function() {
+                return this.str.split('').reverse().join('');
+            }
+        },
+        watch: { //侦听器用来处理异步或耗时的操作,数据变化就会触发
+            firstName: function(vul) {
+                this.fullname = vul + " " + this.lastName;
+            },
+            lastName: function(vul) { //这里的value就是它改变的值
+                this.fullname = this.firstName + " " + vul;
+
+            }
+        },
+        filters: { //内部过滤器
+            lower: function(vul) {
+                return vul.charAt(0).toLowerCase() + vul.slice(1);
+            }
+        }
+    })
+</script>
+
+</html>

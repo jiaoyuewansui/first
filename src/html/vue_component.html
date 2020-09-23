@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <button-counter></button-counter>
+        <hello-world></hello-world>
+        <hello-tom></hello-tom>
+        <hello-json></hello-json>
+        <hello-jury></hello-jury>
+    </div>
+</body>
+<script src="../js/vue.js "></script>
+<script>
+    //组件命名方式 — 或驼峰法，可以在组件里用驼峰的命名的组件，但是在标签中要使用—，如上
+    //组件里要是单根的，只有一个根元素，不能有兄弟，,内部可以调用其他组件并且data是方法，形成闭包，分割开组件
+    Vue.component('button-counter', {
+        data: function() {
+            return {
+                count: 0
+            }
+        },
+        template: `<div>
+            <span>你好</span>
+            <button @click="adds">点击了{{count}}次</button>
+            <helloWorld></helloWorld>
+            </div>`,
+        methods: {
+            adds: function(e) {
+                this.count++
+                    console.log(e);
+
+            }
+        }
+    })
+    Vue.component('helloWorld', {
+        data: function() {
+            return {
+                msg: "hello"
+            }
+        },
+        template: '<span>{{msg}}</span>',
+    })
+
+
+
+    //局部组件,外边的定义，内部注册,只能在注册的父组件的指令中使用，外部不可使用，外部组件也不可调用
+    var helloWorld = {
+        data: function() {
+            return {
+                msg: "hello"
+            }
+        },
+        template: '<span>{{msg}}</span>',
+    }
+
+    var helloTom = {
+        data: function() {
+            return {
+                msg: "hello tom"
+            }
+        },
+        template: '<div>{{msg}}</div>',
+    }
+
+    var hell0Json = {
+        data: function() {
+            return {
+                msg: "hello json"
+            }
+        },
+        template: '<div>{{msg}}</div>',
+    }
+
+    var helloJury = {
+        data: function() {
+            return {
+                msg: "hello jury"
+            }
+        },
+        template: '<div>{{msg}}</div>',
+    }
+
+
+
+    //这个就是根组件
+    var vm = new Vue({
+        el: '#app',
+        data: {
+
+        },
+        components: {
+            'hello-tom': helloTom,
+            'hello-json': hell0Json,
+            'hello-jury': helloJury
+        }
+    })
+</script>
+
+</html>

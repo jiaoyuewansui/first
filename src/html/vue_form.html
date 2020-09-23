@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <form action="">
+            <!-- .number的用法 转化字符串为数字 -->
+            <label for="ages">年龄</label><input type="text" v-model.number="age" id="ages"><br>
+
+            <!-- trim的用法 -->
+            <label for="username">用户名</label><input type="text" v-model.trim='user' id="username"><br>
+
+            <!-- lazy的用法 将input事件变为change事件 change在失去焦点都出发，input的只要改变就触发 -->
+            <!-- v-model默认是input事件，所以在表单验证得时候要是去焦点在验证要用lazy -->
+
+            <label for="">性别</label>
+            <input type="radio" value="1" id="male" v-model="gender"><label for="male">男</label>
+            <input type="radio" value="2" id="female" v-model="gender"><label for="female">女</label><br>
+            <label for="">爱好</label>
+            <input type="checkbox" value="1" id="apple" v-model="habby"><label for="apple">苹果</label>
+            <input type="checkbox" value="2" id="orange" v-model="habby"><label for="orange">橙子</label>
+            <input type="checkbox" value="3" id="banana" v-model="habby"><label for="banana">香蕉</label><br>
+            <span>职业</span>
+            <select v-model="work">
+                <option value="0" >选择职业</option>
+                <option value="1">职业1</option>
+                <option value="2">职业2</option>
+                <option value="3">职业3</option>
+            </select>
+            <br>
+            <span>总结</span>
+            <textarea v-model="dec"></textarea><br>
+            <input type="submit" @click.prevent='getm'>
+        </form>
+    </div>
+</body>
+<script src="../js/vue.js"></script>
+<script>
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            gender: 1,
+            user: "",
+            habby: ['2'],
+            work: 0,
+            dec: "nice",
+            age: 0
+        },
+        methods: {
+            getm: function() {
+                console.log(this.user.length);
+            }
+        }
+    })
+</script>
+
+</html>

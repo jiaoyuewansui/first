@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    [v - cloak] {
+        display: none;
+    }
+    
+    .red {
+        text-decoration: none;
+    }
+    
+    .active {
+        width: 100px;
+        height: 100px;
+        border: 1px solid pink;
+        background-color: purple;
+    }
+    
+    .error {
+        transform: rotate(45deg);
+        transition: all .3 ease;
+    }
+    
+    .error:hover {
+        transform: rotate(180deg);
+    }
+</style>
+
+<body>
+    <div id="app">
+        <!-- 插值表达式 -->
+        <div v-cloak>{{msg}}</div>
+        <!-- <div>{{1+2}}</div>
+        <div>{{'拼接字符串'+'dddd'}}</div> -->
+        <div v-text='msg'></div>
+        <div v-html='msg1'></div>
+        <div v-pre>{{msg}}</div>
+        <div v-once>{{info}}</div>
+        <span>{{names}}</span><br>
+        <input type="text" v-model='names'><br>
+        <span>{{num}}</span><br>
+        <input type="button" v-on:click='num++' value="加一">
+        <input type="button" @click='num--' value="减一">
+        <!-- 想要传对象只能用有（）的并且只能写$event,有其他参数，它要写在最后一个  -->
+        <input type="button" v-on:click.stop='addi(123,123,$event)' value="加一">
+        <input type="button" @click='deci' value="减一">
+        <input type="text" v-on:keyup="handle"><br>
+        <a v-bind:href="url" v-text="target" target="_blank_"></a><br>
+        <button v-on:click="changes">切换</button><br>
+        <a :href="url" v-text="target" target="_blank_"></a><br>
+
+        <!-- v-model的实质 -->
+        <input type="text" v-bind:value="test" @input="testf">
+        <input type="text" v-bind:value="test" @input="test=$event.target.value">
+
+
+        <!-- 样式绑定 -->
+        <!-- class -->
+        <!-- isActive就是true或false 对象形式-->
+        <div :class="{active:isActive,error:isError}"></div>
+        <button @click="changeAc">切换</button>
+
+        <!-- 在数组中定义-->
+        <div :class="[activeClass,errorClass]"></div>
+        <button @click="changeA">切换</button>
+
+        <!-- 样式绑定简化 数组-->
+        <div :class="arrClasses"></div>
+
+
+        <!-- 样式绑定简化 对象-->
+        <div :class="objClasses"></div>
+
+
+        <hr>
+        <!-- style -->
+        <div :style="{border:bs,width:ws,height:hs}"></div>
+        <button @click="changeSAc">切换</button>
+
+        <!-- 样式绑定简化 对象-->
+        <div :style="objStyle"></div>
+        <button @click="changeSAc">切换</button>
+        <!-- 是对象数组 -->
+        <div :style="[ objStyle, overStyle]"></div>
+
+
+    </div>
+    <script src="../js/vue.js "></script>
+    <script>
+        // 指令v-cloak
+        // 1.提供样式
+
+        // 2.在插值表达式的标签中添加指令
+        // 原理：先通过样式隐藏，在内存中处理完成后在显示
+
+        // v - text,填充纯文本，比插值表达式好，没有闪动问题
+
+        //v-html 填充HTml片段 存在安全问题，网站内部可以使用，
+        // 第三方的数据不可用
+
+        //v-pre 显示原始的信息，跳过编译过程
+
+        //v-once只编译一次，显示后不再有响应式的功能,
+        // 如果显示的信息以后不需要修改可以用这个，节省性能
+
+
+        //数据双向绑定 v-model  
+
+        // 事件绑定v-on,可以用@替代
+        // 1事件只绑定函数名称那么会默认传递对象作为事件函数的参数
+        //如果绑定函数调用，事件对象必须做参数传递，
+        // 并且比学位最后一个，为$evennt
+
+        // 事件修饰符，阻止冒泡 .stop
+        //阻止默认行为.prevent ,如a标签，可以链式写
+        //按键修饰符.enter 按enter
+        // .delete delete
+
+        // v-on:keyup.enter=function
+        // 也可以后面直接跟按键的值如v-on:keyup.65=function
+        //也可以自定义按键修饰符Vue.config.keyCodes.ss（自定义的名）=65(按键值)
+
+        //属性绑定v-bind,可以简写成:
+
+
+        // 样式绑定
+
+        //class样式处理
+        // 对象形式 v-bind:class="{ } "
+        //数组绑定  v-bind:class="[] "
+        // 1。对象绑定和数组绑定可以结合使用 
+        // 数组里可以加对象[ activeClass,errorClass,{active:isActive,error:isError}]
+
+        // 2。class绑定的值可以简化
+        //可以在data里建类的对象和数组，如下面建的,在把他们添加到元素如上面,在操作里面的元素即可2
+
+        // 3.默认class处理
+        //默认的class会保留不会覆盖
+
+
+        //style样式处理 
+        // 对象形式 v-bind:style="{ } "
+        //数组绑定  v-bind:style="[{},{}] ",里面是对象形式的，后面的覆盖前面的
+
+        new Vue({
+            // 元素测挂载位置，css选择器或DOM
+            el: '#app',
+            data: {
+                msg: 'Hello World',
+                msg1: '<h1>HTML</h1>',
+                info: 'jiaoyue',
+                names: 'ddd ',
+                num: 0,
+                url: 'http://www.baidu.com',
+                target: '百度',
+                test: "双向绑定本质 ",
+                isActive: true,
+                isError: true,
+                activeClass: 'active',
+                errorClass: 'error',
+                arrClasses: ['active', 'error'],
+                objClasses: {
+                    active: true,
+                    error: true
+                },
+                bs: '1px solid pink',
+                ws: '100px',
+                hs: '100px',
+                objStyle: {
+                    width: "100px ",
+                    height: "100px ",
+                    border: "20px solid pink "
+                },
+                overStyle: {
+                    width: "100px ",
+                    height: "100px ",
+                    border: "10px solid blue "
+                }
+            },
+            methods: {
+                addi: function(p1, p2, event) {
+                    console.log(p1, p2);
+                    console.log(event.target.value);
+                    this.num++;
+                },
+                deci: function(event) {
+                    this.num--;
+                    console.log(event.target.value);
+                },
+                handle: function(event) {
+                    console.log(event.keyCode);
+                },
+                changes: function(event) {
+                    this.url = "http://www.douyu.com ";
+                    this.target = '斗鱼';
+                    event.target.nextElementSibling.nextElementSibling.classList.add('red')
+                },
+                testf: function(event) {
+                    this.test = event.target.value;
+                },
+                changeAc: function(event) {
+                    this.isActive = !this.isActive;
+                    this.isError = !this.isError;
+                },
+                changeA: function() {
+                    this.errorClass = " "; //这样就把类清了 
+                },
+                changeSAc: function(event) { //style样式
+                    this.hs = "50px ";
+                    this.objStyle.height = "50px "
+                },
+            }
+        })
+        var name = `vue`;
+        console.log(`hello,${name}`);
+    </script>
+</body>
+
+</html>

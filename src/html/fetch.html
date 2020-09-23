@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    fetch('http://example.com/movies.json', {
+            method: 'get', //这个可是delete,他们两个传参值用路径后台就可以得到
+        })
+        .then(function(response) {
+            return response.text();
+            //text方法是fetch的一部分，是promise的实例对象，用于后台返回的数据
+        })
+        .then(function(data) {
+            console.log(data);
+        });
+
+    //post
+    fetch('http://example.com/movies.json', {
+            method: 'post', //这个可是post
+            body: 'uname=李四&&pwd=123',
+            header: { //必须要写
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+
+        })
+        .then(function(response) {
+            return response.text();
+            //text方法是fetch的一部分，是promise的实例对象，用于后台返回的数据
+        })
+        .then(function(data) {
+            console.log(data);
+        });
+    //post
+    fetch('http://example.com/movies.json', {
+            method: 'post', //这个可是post
+            body: JSON.stringify({
+                uname: "李四",
+                pwd: '123'
+            }),
+            header: { //必须要写
+                'Content-Type': 'application/json'
+            }
+
+        })
+        .then(function(response) {
+            return response.text();
+            //text方法是fetch的一部分，是promise的实例对象，用于后台返回的数据
+        })
+        .then(function(data) {
+            console.log(data);
+        });
+
+    //put一般要修改的内容，所以路径要有id？或/
+    fetch('http://example.com/movies.json', {
+            method: 'put', //这个可是post
+            body: JSON.stringify({
+                uname: "李四",
+                pwd: '123'
+            }),
+            header: { //必须要写
+                'Content-Type': 'application/json'
+            }
+
+        })
+        .then(function(response) {
+            return response.text();
+            //text方法是fetch的一部分，是promise的实例对象，用于后台返回的数据
+        })
+        .then(function(data) {
+            console.log(data);
+        });
+
+    //返回数据形式除了text()还有json()//接收的为json对象
+    fetch('http://example.com/movies.json', {
+            method: 'get', //这个可是delete,他们两个传参值用路径后台就可以得到
+        })
+        .then(function(response) {
+            return response.json();
+            //text方法是fetch的一部分，是promise的实例对象，用于后台返回的数据
+        })
+        .then(function(data) {
+            console.log(data.name); //获得属性用属性值即可，用text()接收json会是字符串，所以用这个要用Json.parse(data)转换
+        });
+</script>
+
+</html>

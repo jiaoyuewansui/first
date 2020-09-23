@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        {{msg}}
+        <button @click="update">更新</button>
+        <button @click="destory">销毁</button></button>
+    </div>
+</body>
+<script src="../js/vue.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            msg: "生命周期"
+        },
+        methods: {
+            update: function() {
+                this.msg = "更新阶段";
+            },
+            destory: function() {
+                this.$destroy()
+            }
+        },
+        //前四个挂载阶段 
+        beforeCreate() {
+            console.log('beforeCreate');
+        },
+        created() {
+            console.log('created');
+        },
+        beforeMount() {
+            console.log('beforeMount');
+        },
+        mounted() { //这个函数被触发说明初始化完成模板加载完毕，可以填充数据
+            console.log('mounted');
+            //经常调用接口获取数据
+        },
+        //后两个更新阶段
+        beforeUpdate() {
+            console.log('beforeUpdate');
+        },
+        updated() {
+            console.log('updated');
+        },
+        //后两个是销毁，不需要这个实例销毁
+        beforeDestroy() {
+            console.log('beforeDestroy');
+        },
+        destroyed() {
+            console.log('destroyed');
+        },
+    })
+</script>
+
+</html>

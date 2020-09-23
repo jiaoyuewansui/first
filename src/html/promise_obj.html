@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    //promise对象常用方法Promise.all()，Promise.race()都是并发处理多个异步任务
+    var p1 = new Promise(function(resolve, reject) {
+        setTimeout(() => {
+            var flag = true;
+            flag ? resolve('正确1') : reject('错误1');
+        }, .5);
+    })
+    var p2 = new Promise(function(resolve, reject) {
+        setTimeout(() => {
+            var flag = true;
+            flag ? resolve('正确2') : reject('错误2');
+        }, .4);
+    })
+    var p3 = new Promise(function(resolve, reject) {
+            setTimeout(() => {
+                var flag = true;
+                flag ? resolve('正确3') : reject('错误3');
+            }, .2);
+        })
+        //Promise.all()等到所有的出结果才执then,里面的参数是数组
+    Promise.all([p1, p2, p3]).then((result) => {
+        console.log(result);
+    })
+
+    //Promise.race()等到返回最快得到的结果，并不关心其他的里面也是数组
+    Promise.race([p1, p2, p3]).then((result) => {
+        console.log(result);
+    })
+</script>
+
+</html>

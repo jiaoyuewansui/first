@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <ul>
+            <li v-for='item in arr'>{{item}}</li>
+        </ul>
+        <div>{{obj.name}}</div>
+        <div>{{obj.age}}</div>
+        <div>{{obj.sex}}</div>
+    </div>
+</body>
+<script src="../js/vue.js"></script>
+<script>
+    // 数组方法中变异方法，使用后影响原数组并且是响应式添加信息有push(),pop(),shift(),unshift(),reverse(),sort(),splice(index,几个)删除数组元素
+    //使用后产生新数组的方法 filter(function())筛选数组,slice()截取数组,concat()复制数组,使用后不响应是添加，用数组接受下
+    //修改响应式的数据
+    //1.Vue.set(vm.items,index,value)
+    //2.vm.$set(vm.items,index,value)
+    //第一个是数组，第二个是索引，第三个是要替换的值  
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            arr: ['华为', 'oppo', '小米'],
+            obj: {
+                name: "几月",
+                age: 12
+            }
+        },
+        mothods: {
+
+        }
+    })
+    Vue.set(vm.arr, 2, '大米')
+    vm.$set(vm.arr, 1, 'vivo')
+    vm.$set(vm.obj, "sex", '男')
+</script>
+
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+
+        <!-- 传递的第一种方式 给title赋值 -->
+        <Menu-item menu-title="来自父组件的值" body="这是多次传值" :num='12' :pb='false' :arr='arr' :obj="obj" @font-style="hander"></Menu-item>
+        <br>
+        <br>
+        <hr>
+        <!-- 传递的第二种方法 v-bind绑定 -->
+        <!-- <Menu-item :menu-title="pmsg" :body='pbody'></Menu-item> -->
+        <br>
+        <br>
+        <hr>
+        <span>儿子给父组件传值,主要是在儿子里用$emit('方法名'),再在调用的时候用这个方法名（其实相当于自定义了一个事件）绑定父组件的methods在这个方法里改变父组件</span><br>
+        <span :style="{fontSize:fontSize+'px'}">{{fontSize}}</span>
+        <son-father @font-style="hander"></son-father>
+        <br>
+        <br>
+        <hr>
+        <span>动态传值要$event接收</span><br>
+        <span :style="{fontSize:fontSize+'px'}">{{fontSize}}</span>
+        <son-father-dong @font-style="handers($event)"></son-father-dong>
+    </div>
+</body>
+<script src="../js/vue.js "></script>
+<script>
+    //组件命名方式 — 或驼峰法，可以在组件里用驼峰的命名的组件，但是在标签中要使用—，如上
+    //组件里要是单根的，只有一个根元素，不能有兄弟，,内部可以调用其他组件并且data是方法，形成闭包，分割开组件
+    Vue.component('menu-item', {
+        props: ['menuTitle', 'body', 'num', 'pb', 'arr', 'obj'], //接收父组件传过来的值，这里传值如果是驼峰形式，使用是要是-的，因为DOM元素不区分大小写，
+        //字符串没有限制,就是下面的templata里,props最好单向数据流，不要操作父组件参数
+        data: function() {
+            return {
+                msg: '这是本身的内容',
+                count: 0
+            }
+        },
+        template: `<div>
+              {{msg+'......'+menuTitle+'........'+body}}
+              <div>{{"加了v-bind传过来的才是数字型的,不加就是字符串"+num}}</div>
+              <div>{{"加了v-bind传过来的才是布尔型的,不加就是字符串"+pb}}</div>
+              <div>
+                  <ul>
+                      <li v-for="item in arr">{{item}}</li>
+                  </ul>
+              </div>
+              <div>
+                  <span>{{obj.names}}</span>
+                  <span>{{obj.age}}</span>
+              </div>
+              <div>
+                  
+              </div>
+            </div>`,
+        methods: {
+            adds: function() {
+                this.count++
+            }
+        }
+    })
+
+    Vue.component('son-father', {
+        data: function() {
+            return {
+
+            }
+        },
+        template: `
+                  <button @click="$emit('font-style')">增大父组件字体大小</button>
+                  `,
+        methods: {
+
+        }
+    })
+
+
+    //动态传递
+    Vue.component('son-father-dong', {
+        data: function() {
+            return {
+
+            }
+        },
+        template: `
+                  <button @click="$emit('font-style',2)">增大父组件字体大小</button>
+                  `,
+        methods: {
+
+        }
+    })
+
+
+
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            pmsg: '这是传递的内容',
+            pbody: '这是第二次',
+            arr: ['华为', 'vivo', 'oppo'],
+            obj: {
+                names: "焦悦",
+                age: 21,
+            },
+            fontSize: 5
+        },
+        methods: {
+            hander: function() {
+                this.fontSize += 5;
+            },
+            handers: function(vul) {
+                this.fontSize += vul;
+            }
+        },
+        components: {},
+    })
+</script>
+
+</html>

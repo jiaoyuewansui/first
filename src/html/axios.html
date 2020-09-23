@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script src="../js/axios.min.js"></script>
+
+<script>
+    //get传递参数   
+    //路径传参？后台用query接收，查询数据
+    axios.get("路径?id='123'").then(function(ret) {
+            console.log(ret.data); //这里的data是数据他是固定的
+        })
+        //路径传参/后台用 params接收 
+    axios.get('路径/id').then(function(ret) {
+            console.log(ret.data); //这里的data是数据他是固定的
+        })
+        // params传参后台用query接收,这个方便 
+    axios.get('路径/', {
+        params: {
+            id: 123
+        }
+    }).then(function(ret) {
+        console.log(ret.data); //这里的data是数据他是固定的
+    })
+
+
+    //delete 请求,删除信息
+    //路径传参？后台用query接收
+    axios.delete("路径?id='123'").then(function(ret) {
+            console.log(ret.data); //这里的data是数据他是固定的
+        })
+        //路径传参/后台用 params接收 
+    axios.delete('路径/id').then(function(ret) {
+            console.log(ret.data); //这里的data是数据他是固定的
+        })
+        // params传参后台用query接收,这个方便 
+    axios.delete('路径/', {
+        params: {
+            id: 123
+        }
+    }).then(function(ret) {
+        console.log(ret.data); //这里的data是数据他是固定的
+    })
+
+
+
+
+
+    //post请求 添加数据 ,。默认传递的是传递对象，得到数据的方式是body
+    axios.post('路径', {
+            params: {
+                id: 123,
+                name: '焦悦 '
+            }
+        }).then(function(ret) {
+            console.log(ret.data); //这里的data是数据他是固定的
+        })
+        //post也可以传表单的
+    var params = new URLSearchParams();
+    params.append('uname', 'jiaoyue');
+    params.append('pwd', '123');
+    axios.post('路径/', params).then(function(ret) {
+        console.log(ret.data); //这里的data是数据他是固定的
+    })
+
+
+
+    //put请求与post一样，也有表单方式 ,修改信息，路径加id
+    axios.put('路径/id', {
+        params: {
+            id: 123,
+            name: '焦悦 '
+        }
+    }).then(function(ret) {
+        console.log(ret.data); //这里的data是数据他是固定的
+    })
+
+    //相应结果的属性
+    // data: 实际响应回来的数据
+    // headers: 响应头信息
+    // status： 响应状态码
+    // statusText: 响应状态信息
+
+
+    全局配置:
+        axios.defaults.timeout = 3000 //超时时间，超过范围默认失败 
+    axios.defaults.baseURL = "路径" //默认地址
+    axios.defaults.headers[''] = '' //设置请求头
+
+
+    拦截器:
+        // 请求拦截器：在发出之前进行设置
+        axios.intercep.request.use(function(config) {
+            config.headers.mytoken = 'nihao';
+            return config;
+
+        }, function(err) {
+            console.log(err)
+        })
+        //响应拦截器对返回的数据进行处理
+    axios.interceptors.response.use(function(res) {
+        var data = res.data;
+        return data; //这样返回的数据就是我们想要的数据而不是对象，then 里边就是我们想要的数据
+
+    }, function(err) {
+        console.log(err)
+    })
+</script>
+
+</html>

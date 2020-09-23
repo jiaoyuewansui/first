@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    var p = new Promise(function(resolve, reject) {
+            //这里处理异步任务,通过承诺上面两个参数来处理，上面两个参数都是方法
+            setTimeout(() => {
+                var flag = true;
+                if (flag) {
+                    resolve('hello');
+                } else {
+                    reject("error");
+                }
+            }, 0.3);
+        })
+        // 第一个函数是resolve传回来的
+        //第二个函数是reject传回来的
+        // p.then(function(data) {
+        //     console.log('data');
+        //     return 'sssss';
+        // }, function(vul) {
+        //     console.log('vul');
+        // }).then(function(data) {
+        //     console.log(data)
+        // });
+
+
+
+
+    p.then(function(data) { //捕获正常的 resolve()
+            console.log(data);
+        })
+        .catch(function(data) { //捕获异常的  reject()
+            console.log(data);
+        })
+        .finally(function() {
+            console.log('任务结束'); //无论正常异常都出
+        });
+
+
+
+
+    // Promise多次使用ajax,这样实现线性嵌套，query（）为ajax靠promise封装的的方法
+    // query("路径1").then(function(data) {
+    //         console.log(data);
+    //         return query('路径2'); //这里相当于把这个方法返回，给下一个then,返回的是一个promise实例对象,该实例对象会调用下一个then
+    //     })
+    //     .then(function(data) {
+    //         console.log(data);
+    //         return query('路径3');
+    //     })
+    //     .then(function(data) {
+    //         console.log(data);
+    //         return 'hello'; //这里返回了一个常量，下个then的的值就就会是这个，是把他封装成了一个promise实例对象好调用then
+    //     }).then(function(data) {
+    //         console.log(data);
+    //     })
+</script>
+
+</html>
